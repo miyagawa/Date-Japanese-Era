@@ -1,0 +1,7 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Date/Japanese/Era.pm
+lib/Date/Japanese/Era/Table.pm
+t/00_Era.t
