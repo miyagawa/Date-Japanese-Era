@@ -1,5 +1,13 @@
 Revision history for Perl extension Date::Japanese::Era.
 
+0.03  Mon Dec 10 16:47:30 JST 2001
+	- forgot to update MANIFEST
+
+0.02  Wed Nov 21 02:30:13 JST 2001
+	* Added Date::Japanese::Era::Table::JIS_X0301
+	  (Thanks to Junio Hamano <junio@twinsun.com>)
+	- Raise warnings before 1872 (non-gregorian calendar)
+
 0.01  Fri Aug 31 21:33:16 2001
 	- original version; created by h2xs 1.19
 
