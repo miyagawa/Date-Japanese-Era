@@ -1,7 +1,7 @@
 use strict;
-use Test::More tests => 34;
+use Test::More tests => 35;
 
-use Date::Japanese::Era;
+BEGIN { use_ok('Date::Japanese::Era'); }
 
 my @tests = (
     [ 2001, 9, 1, 'Ê¿À®', 13 ],
@@ -12,22 +12,22 @@ my @tests = (
     [ 1926, 12, 24, 'taishou', 15 ],
     [ 1912, 7, 30, 'taishou', 1 ],
     [ 1912, 7, 29, 'meiji', 45 ],
-    [ 1868, 9, 8, 'meiji', 1 ]
+    [ 1873, 1, 1, 'meiji', 6 ]
 );
 
 for my $test (@tests) {
     my($year, $month, $day, $name, $era_year) = @$test;
     my $e1 = Date::Japanese::Era->new($year, $month, $day);
     if ($name =~ /^\w+$/) {
-	ok($e1->name_ascii eq $name, 'Gregorian to Japanese era (ASCII)');
+	is($e1->name_ascii, $name, 'Gregorian to Japanese era (ASCII)');
     }
     else {
-	ok($e1->name('euc') eq $name, 'Gregorian to Japanese era');
+	is($e1->name('euc'), $name, 'Gregorian to Japanese era');
     }
-    ok($e1->year == $era_year);
+    is($e1->year, $era_year);
 
     my $e2 = Date::Japanese::Era->new($name, $era_year);
-    ok($e2->gregorian_year == $year, 'Japanese era to Gregorian');
+    is($e2->gregorian_year, $year, 'Japanese era to Gregorian');
 }
 
 
@@ -42,10 +42,11 @@ my @fail = (
 );
 
 for my $fail (@fail) {
+    local $SIG{__WARN__} = sub {};
     eval {
 	my $u = Date::Japanese::Era->new(@{$fail->[0]});
     };
-    ok($@ =~ /$fail->[1]/, 'various ways to fail');
+    like($@, qr/$fail->[1]/, 'various ways to fail');
 }
 
 SKIP: {
@@ -53,7 +54,7 @@ SKIP: {
     my $utf8 = "\xe6\x98\xad\xe5\x92\x8c";	# ¾¼ÏÂ
     Date::Japanese::Era->codeset('utf8');
     my $era = Date::Japanese::Era->new($utf8, 52);
-    ok($era->name eq $utf8, 'input / output UTF-8');
+    is($era->name, $utf8, 'input / output UTF-8');
 };
 
 
