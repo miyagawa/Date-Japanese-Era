@@ -3,12 +3,14 @@ use Test::More tests => 35;
 
 BEGIN { use_ok('Date::Japanese::Era'); }
 
+use encoding "utf-8";
+
 my @tests = (
-    [ 2001, 9, 1, 'Ê¿À®', 13 ],
-    [ 1989, 1, 8, 'Ê¿À®', 1 ],
-    [ 1989, 1, 7, '¾¼ÏÂ', 64 ],
-    [ 1977, 9, 12, '¾¼ÏÂ', 52 ],
-    [ 1926, 12, 25, '¾¼ÏÂ', 1 ],
+    [ 2001, 9, 1, 'å¹³æˆ', 13 ],
+    [ 1989, 1, 8, 'å¹³æˆ', 1 ],
+    [ 1989, 1, 7, 'æ˜­å’Œ', 64 ],
+    [ 1977, 9, 12, 'æ˜­å’Œ', 52 ],
+    [ 1926, 12, 25, 'æ˜­å’Œ', 1 ],
     [ 1926, 12, 24, 'taishou', 15 ],
     [ 1912, 7, 30, 'taishou', 1 ],
     [ 1912, 7, 29, 'meiji', 45 ],
@@ -18,11 +20,11 @@ my @tests = (
 for my $test (@tests) {
     my($year, $month, $day, $name, $era_year) = @$test;
     my $e1 = Date::Japanese::Era->new($year, $month, $day);
-    if ($name =~ /^\w+$/) {
+    if ($name =~ /^[a-zA-Z]+$/) {
 	is($e1->name_ascii, $name, 'Gregorian to Japanese era (ASCII)');
     }
     else {
-	is($e1->name('euc'), $name, 'Gregorian to Japanese era');
+	is($e1->name, $name, 'Gregorian to Japanese era');
     }
     is($e1->year, $era_year);
 
@@ -35,8 +37,8 @@ for my $test (@tests) {
 my @fail = (
     [ [],  'odd number of arguments: ' ],
     [ [ 'xxx', 1 ], 'Unknown era name: ' ],
-    [ [ '·Ä±þ', 12 ], 'Unknown era name: ' ],
-    [ [ '¾¼ÏÂ', 65 ], 'Invalid combination of era and year: ' ],
+    [ [ 'æ…¶å¿œ', 12 ], 'Unknown era name: ' ],
+    [ [ 'æ˜­å’Œ', 65 ], 'Invalid combination of era and year: ' ],
     [ [ 1868, 9, 7 ], 'Unsupported date: ' ],
     [ [ 2000, -1, -1 ], 'not a valid date' ], # XXX depends on D::Calc
 );
@@ -49,15 +51,9 @@ for my $fail (@fail) {
     like($@, qr/$fail->[1]/, 'various ways to fail');
 }
 
-SKIP: {
-    skip 'Jcode not installed', 1 unless $Date::Japanese::Era::Have_Jcode;
-    my $utf8 = "\xe6\x98\xad\xe5\x92\x8c";	# ¾¼ÏÂ
-    Date::Japanese::Era->codeset('utf8');
-    my $era = Date::Japanese::Era->new($utf8, 52);
-    is($era->name, $utf8, 'input / output UTF-8');
-};
-
-
+my $utf8 = "\xe6\x98\xad\xe5\x92\x8c";	# æ˜­å’Œ
+my $era = Date::Japanese::Era->new($utf8, 52);
+is($era->name, $utf8, 'input / output UTF-8');
 
 
 

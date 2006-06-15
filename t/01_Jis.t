@@ -1,14 +1,15 @@
 use strict;
 use Test::More tests => 27;
 
+use encoding "utf-8";
 use Date::Japanese::Era 'JIS_X0301';
 
 my @tests = (
-    [ 2001, 9, 1, 'Ê¿À®', 13 ],
-    [ 1989, 1, 8, 'Ê¿À®', 1 ],
-    [ 1989, 1, 7, '¾¼ÏÂ', 64 ],
-    [ 1977, 9, 12, '¾¼ÏÂ', 52 ],
-    [ 1926, 12, 26, '¾¼ÏÂ', 1 ],
+    [ 2001, 9, 1, 'å¹³æˆ', 13 ],
+    [ 1989, 1, 8, 'å¹³æˆ', 1 ],
+    [ 1989, 1, 7, 'æ˜­å’Œ', 64 ],
+    [ 1977, 9, 12, 'æ˜­å’Œ', 52 ],
+    [ 1926, 12, 26, 'æ˜­å’Œ', 1 ],
     [ 1926, 12, 25, 'taishou', 15 ],
     [ 1912, 7, 31, 'taishou', 1 ],
     [ 1912, 7, 30, 'meiji', 45 ],
@@ -18,11 +19,11 @@ my @tests = (
 for my $test (@tests) {
     my($year, $month, $day, $name, $era_year) = @$test;
     my $e1 = Date::Japanese::Era->new($year, $month, $day);
-    if ($name =~ /^\w+$/) {
+    if ($name =~ /^[a-z]+$/) {
 	is($e1->name_ascii, $name, 'Gregorian to Japanese era (ASCII)');
     }
     else {
-	is($e1->name('euc'), $name, 'Gregorian to Japanese era');
+	is($e1->name, $name, 'Gregorian to Japanese era');
     }
     is($e1->year, $era_year);
 

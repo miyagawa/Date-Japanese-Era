@@ -6,7 +6,7 @@ WriteMakefile(
     'VERSION_FROM' => 'lib/Date/Japanese/Era.pm', # finds $VERSION
     'PREREQ_PM' => {
 	Date::Calc => 4.3,
-	Jcode      => 0.75,
 	Test::More => 0,
+        Encode => 2.1,
     },
 );

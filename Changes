@@ -1,5 +1,11 @@
 Revision history for Perl extension Date::Japanese::Era.
 
+0.04  Thu Jun 15 10:27:08 JST 2006
+        * [BACKWARD INCOMPATIBLE CHANGE]
+          Refactored how to handle encodings. Deprecated old codeset()
+          APIs and now it just requires Unicode flagged string as method
+          input/output.
+
 0.03  Mon Dec 10 16:47:30 JST 2001
 	- forgot to update MANIFEST
 

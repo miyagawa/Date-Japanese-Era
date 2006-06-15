@@ -1,32 +1,12 @@
 package Date::Japanese::Era;
 
 use strict;
-use vars qw($VERSION);
-$VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Carp;
 use constant END_OF_LUNAR => 1872;
 
 use vars qw(@ISA @EXPORT %ERA_TABLE %ERA_JA2ASCII %ERA_ASCII2JA);
-
-use vars qw($Have_Jcode);
-BEGIN {
-    $Have_Jcode = 0;
-    eval { require Jcode; $Have_Jcode++; };
-}
-
-{
-    my $codeset = 'euc';
-    sub codeset {
-	my $proto = shift;
-	if (@_) {
-	    carp "Jcode is required to modify codeset. Ignored."
-		unless $Have_Jcode;
-	    $codeset = shift;
-	}
-	$codeset;
-    }
-}
 
 sub import {
     my $self = shift;
@@ -56,7 +36,7 @@ sub new {
 	$self->_from_era(@args);
     }
     else {
-	croak "odd number of arguments: @args";
+	croak "odd number of arguments: ", scalar(@args);
     }
     return $self;
 }
@@ -88,17 +68,17 @@ sub _from_ymd {
 
 sub _from_era {
     my($self, $era, $year) = @_;
-    if ($era =~ /^\w+$/) {
+    if ($era =~ /^[a-zA-Z]+$/) {
 	$era = $self->_ascii2ja($era);
     }
-    elsif ($Have_Jcode) {
-	$era = Jcode->new($era, $self->codeset)->euc;
+
+    unless (utf8::is_utf8($era)) {
+        croak "Era needs to be Unicode string";
     }
 
-    unless (exists $ERA_TABLE{$era}) {
-	croak "Unknown era name: $era";
-    }
-    my $data = $ERA_TABLE{$era};
+    my $data = $ERA_TABLE{$era}
+        or croak "Unknown era name: $era";
+
     my $g_year = $data->[1] + $year - 1;
     if ($g_year > $data->[4]) {
 	croak "Invalid combination of era and year: $era-$year";
@@ -121,10 +101,6 @@ sub _ja2ascii {
 
 sub name {
     my $self = shift;
-    if ($Have_Jcode) {
-	my $encoding = $self->codeset;
-	return Jcode->new($self->{name}, 'euc')->$encoding();
-    }
     return $self->{name};
 }
 
@@ -160,10 +136,10 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
   $era = Date::Japanese::Era->new(1970, 1, 1);
 
   # from Japanese Era
-  $era = Date::Japanese::Era->new('¾¼ÏÂ', 52);
+  $era = Date::Japanese::Era->new("\x{662D}\x{548C}", 52); # SHOWA
 
-  $name      = $era->name;         # '¾¼ÏÂ' in EUC-jp (default)
-  $gengou    = $era->gengou;       # same
+  $name      = $era->name;         # \x{662D}\x{548C} (Unicode flagged)
+  $gengou    = $era->gengou;       # Ditto
 
   $year      = $era->year;	   # 52
   $gregorian = $era->gregorian_year;  	   # 1977
@@ -181,22 +157,6 @@ Gregorian calendar.
 
 =over 4
 
-=item codeset
-
-  $codeset = Date::Japanese::Era->codeset;
-  Date::Japanese::Era->codeset($encoding);
-
-sets / gets external encoding of Japanese era names. For example with
-the following code, input and output of era names are encoded in UTF-8.
-
-  Date::Japanese::Era->codeset('utf8');
-  $era = Date::Japanese::Era->new($name, $year); # $name is UTF-8
-  print $era->name;                              # also UTF-8
-
-You need Jcode module installed to make use of this
-feature. Otherwise, calls to codeset() are simply ignored (with
-warning).
-
 =item new
 
   $era = Date::Japanese::Era->new($year, $month, $day);
@@ -206,9 +166,8 @@ Constructs new Date::Japanese::Era instance. When constructed from
 Gregorian date, month and day is required. You need Date::Calc to
 construct from Gregorian.
 
-Name of era can be either of Japanese / ASCII. Input encodings can be
-specified via codeset(), suppose you have Jcode module
-installed. Default is EUC-JP.
+Name of era can be either of Japanese / ASCII. If you pass Japanese,
+the variable should be properly UTF-8 flaged.
 
 Exceptions are thrown when inputs are invalid (e.g: non-existent
 era name and year combination, unknwon era-name, etc.).
@@ -217,8 +176,7 @@ era name and year combination, unknwon era-name, etc.).
 
   $name = $era->name;
 
-returns era name in Japanese. Encoding can be specified via codeset()
-class method. Default is EUC-JP.
+returns era name in Japanese in Unicode.
 
 =item gengou
 
@@ -253,7 +211,7 @@ returns year as Gregorian.
   printf "%s-%s", uc(substr($era->name_ascii, 0, 1)), $era->year;
 
   # to Gregorian
-  my $era = Date::Japanese::Era->new('Ê¿À®', 13);
+  my $era = Date::Japanese::Era->new("\x{5E73}\x{6210}", 13); # HEISEI 13
   print $era->gregorian_year;	# 2001
 
 =head1 CAVEATS
@@ -266,6 +224,10 @@ Currently supported era is up to 'meiji'. And before Meiji 05.12.02,
 gregorius calendar was not used there, but lunar calendar was. This
 module does not support lunar calendar, but gives warnings in such
 cases ("In %d they didn't use gregorius calendar").
+
+To use calendar ealier than that, see
+L<DateTime::Calendar::Japanese::Era>, which is based on DateTime
+framework and is more comprehensive.
 
 =item *
 
@@ -288,21 +250,6 @@ should be upgraded.
 
 =back
 
-=head1 TODO
-
-=over 4
-
-=item *
-
-Date parameters can be in various format. I should replace
-Date::Simple or whatever for that.
-
-=item *
-
-Support earlier eras and lunar calendar.
-
-=back
-
 =head1 AUTHOR
 
 Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
@@ -312,6 +259,6 @@ modify it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Date::Calc>, L<Jcode>, L<Date::Simple>
+L<DateTime::Calendar::Japanese::Era>, L<Date::Calc>, L<Encode>
 
 =cut
