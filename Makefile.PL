@@ -8,5 +8,6 @@ WriteMakefile(
 	Date::Calc => 4.3,
 	Test::More => 0,
         Encode => 2.1,
+        Lingua::JA::Numbers => 0.04,
     },
 );

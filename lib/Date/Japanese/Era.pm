@@ -1,7 +1,7 @@
 package Date::Japanese::Era;
 
 use strict;
-our $VERSION = '0.04';
+our $VERSION = '0.06';
 
 use Carp;
 use constant END_OF_LUNAR => 1872;
@@ -35,9 +35,13 @@ sub new {
     elsif (@args == 2) {
 	$self->_from_era(@args);
     }
-    else {
-	croak "odd number of arguments: ", scalar(@args);
+    elsif (@args == 1) {
+	$self->_dwim(@args);
     }
+    else {
+        croak "odd number of arguments: ", scalar(@args);
+    }
+
     return $self;
 }
 
@@ -89,6 +93,47 @@ sub _from_era {
     $self->{gregorian_year} = $g_year;
 }
 
+sub _dwim {
+    my($self, $str) = @_;
+
+    unless (utf8::is_utf8($str)) {
+        croak "Era should be Unicode flagged";
+    }
+
+    my $gengou_re = join "|", keys %ERA_JA2ASCII;
+
+    $str =~ s/^($gengou_re)//
+        or croak "Can't extract Era from $str";
+
+    my $era = $1;
+
+    $str =~ s/\x{5E74}$//; # nen
+    my $year = _number($str);
+
+    unless (defined $year) {
+        croak "Can't parse year from $str";
+    }
+
+    $self->_from_era($era, $year);
+}
+
+sub _number {
+    my $str = shift;
+
+    $str =~ s/([\x{FF10}-\x{FF19}])/;ord($1)-0xff10/eg;
+
+    if ($str =~ /^\d+$/) {
+        return $str;
+    } else {
+        eval { require Lingua::JA::Numbers };
+        if ($@) {
+            croak "require Lingua::JA::Numbers to read Japanized numbers";
+        }
+
+        return Lingua::JA::Numbers::ja2num($str);
+    }
+}
+
 sub _ascii2ja {
     my($self, $ascii) = @_;
     return $ERA_ASCII2JA{$ascii} || croak "Unknown era name: $ascii";
@@ -124,6 +169,8 @@ sub gregorian_year {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
@@ -147,6 +194,10 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
   # use JIS X0301 table for conversion
   use Date::Japanese::Era 'JIS_X0301';
 
+  # more DWIMmy
+  use encoding 'utf-8';
+  $era = Date::Japanese::Era->new("昭和五十二年");
+  $era = Date::Japanese::Era->new("昭和52年");
 
 =head1 DESCRIPTION
 
@@ -161,6 +212,7 @@ Gregorian calendar.
 
   $era = Date::Japanese::Era->new($year, $month, $day);
   $era = Date::Japanese::Era->new($era_name, $year);
+  $era = Date::Japanese::Era->new($era_year_string);
 
 Constructs new Date::Japanese::Era instance. When constructed from
 Gregorian date, month and day is required. You need Date::Calc to

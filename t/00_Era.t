@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 35;
+use Test::More tests => 47;
 
 BEGIN { use_ok('Date::Japanese::Era'); }
 
@@ -55,5 +55,19 @@ my $utf8 = "\xe6\x98\xad\xe5\x92\x8c";	# 昭和
 my $era = Date::Japanese::Era->new($utf8, 52);
 is($era->name, $utf8, 'input / output UTF-8');
 
+{
+    my @era;
+    push @era, Date::Japanese::Era->new('昭和52年');
+    push @era, Date::Japanese::Era->new('昭和52');
+    push @era, Date::Japanese::Era->new('昭和５２年');
+    push @era, Date::Japanese::Era->new('昭和５２');
+    push @era, Date::Japanese::Era->new('昭和五十二年');
+    push @era, Date::Japanese::Era->new('昭和五十二');
+
+    for my $e (@era) {
+        is $e->name, '昭和';
+        is $e->year, 52;
+    }
+}
 
 
