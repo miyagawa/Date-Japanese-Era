@@ -1,5 +1,7 @@
 Revision history for Perl extension Date::Japanese::Era.
 
+{{$NEXT}}
+
 0.06  Thu Jun 15 11:07:39 JST 2006
         - Oops, forgot to update Changes
 

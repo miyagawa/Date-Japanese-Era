@@ -306,6 +306,12 @@ should be upgraded.
 
 Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
 
+=head1 COPYRIGHT
+
+Tatsuhiko Miyagawa, 2001-
+
+=head1 LICENSE
+
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
