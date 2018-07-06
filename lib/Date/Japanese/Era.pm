@@ -6,7 +6,7 @@ our $VERSION = '0.06';
 use Carp;
 use constant END_OF_LUNAR => 1872;
 
-use vars qw(@ISA @EXPORT %ERA_TABLE %ERA_JA2ASCII %ERA_ASCII2JA);
+our(%ERA_TABLE, %ERA_JA2ASCII, %ERA_ASCII2JA);
 
 sub import {
     my $self = shift;
