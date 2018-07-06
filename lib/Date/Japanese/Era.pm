@@ -195,7 +195,7 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
   use Date::Japanese::Era 'JIS_X0301';
 
   # more DWIMmy
-  use encoding 'utf-8';
+  use utf8;
   $era = Date::Japanese::Era->new("昭和五十二年");
   $era = Date::Japanese::Era->new("昭和52年");
 
