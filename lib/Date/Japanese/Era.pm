@@ -96,7 +96,7 @@ sub _dwim {
     my($self, $str) = @_;
 
     unless (utf8::is_utf8($str)) {
-        croak "Era should be Unicode flagged";
+        croak "Era should be in Unicode";
     }
 
     my $gengou_re = join "|", keys %ERA_JA2ASCII;
@@ -217,11 +217,15 @@ Constructs new Date::Japanese::Era instance. When constructed from
 Gregorian date, month and day is required. You need Date::Calc to
 construct from Gregorian.
 
-Name of era can be either of Japanese / ASCII. If you pass Japanese,
-the variable should be properly UTF-8 flaged.
+Name of era can be either of Japanese / ASCII. If you pass Japanese
+text, they should be in Unicode.
 
-Exceptions are thrown when inputs are invalid (e.g: non-existent
-era name and year combination, unknwon era-name, etc.).
+Errors will be thrown if you pass byte strings such as UTF-8 or
+EUC-JP, since Perl doesn't understand what encoding they're in. Use
+the L<utf8> pragma if you want to write them in literals.
+
+Exceptions are thrown when inputs are invalid, such as non-existent
+era name and year combination, unknwon era-name, etc.
 
 =item name
 
