@@ -39,7 +39,8 @@
          "requires" : {
             "Date::Calc" : "4.3",
             "Encode" : "2.1",
-            "Lingua::JA::Numbers" : "0.04"
+            "Lingua::JA::Numbers" : "0.04",
+            "perl" : "5.008001"
          }
       },
       "test" : {

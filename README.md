@@ -4,15 +4,16 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
 
 # SYNOPSIS
 
+    use utf8;
     use Date::Japanese::Era;
 
     # from Gregorian (month + day required)
     $era = Date::Japanese::Era->new(1970, 1, 1);
 
     # from Japanese Era
-    $era = Date::Japanese::Era->new("\x{662D}\x{548C}", 52); # SHOWA
+    $era = Date::Japanese::Era->new("昭和", 52); # SHOWA
 
-    $name      = $era->name;         # \x{662D}\x{548C} (Unicode flagged)
+    $name      = $era->name;         # 昭和 (in Unicode)
     $gengou    = $era->gengou;       # Ditto
 
     $year      = $era->year;         # 52
@@ -22,7 +23,6 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
     use Date::Japanese::Era 'JIS_X0301';
 
     # more DWIMmy
-    use encoding 'utf-8';
     $era = Date::Japanese::Era->new("昭和五十二年");
     $era = Date::Japanese::Era->new("昭和52年");
 
@@ -79,6 +79,7 @@ Gregorian calendar.
 
 # EXAMPLES
 
+    use utf8;
     use Date::Japanese::Era;
 
     # 2001 is H-13
@@ -86,7 +87,7 @@ Gregorian calendar.
     printf "%s-%s", uc(substr($era->name_ascii, 0, 1)), $era->year;
 
     # to Gregorian
-    my $era = Date::Japanese::Era->new("\x{5E73}\x{6210}", 13); # HEISEI 13
+    my $era = Date::Japanese::Era->new("平成", 13); # HEISEI 13
     print $era->gregorian_year;   # 2001
 
 # CAVEATS

@@ -1,5 +1,6 @@
 package Date::Japanese::Era::Table::JIS_X0301;
 
+use utf8;
 use strict;
 our $VERSION = '0.01';
 
@@ -9,10 +10,10 @@ our @EXPORT = qw(%ERA_TABLE %ERA_JA2ASCII %ERA_ASCII2JA);
 
 our %ERA_TABLE = (
     # era => [ $ascii, @begin_ymd, @end_ymd ]
-    "\x{660E}\x{6CBB}" => [ 'meiji', 1868, 9, 8, 1912, 7, 30 ],
-    "\x{5927}\x{6B63}" => [ 'taishou', 1912, 7, 31, 1926, 12, 25 ],
-    "\x{662D}\x{548C}" => [ 'shouwa', 1926, 12, 26, 1989, 1, 7 ],
-    "\x{5E73}\x{6210}" => [ 'heisei', 1989, 1, 8, 2999, 12, 31 ], # XXX
+    "明治" => [ 'meiji', 1868, 9, 8, 1912, 7, 30 ],
+    "大正" => [ 'taishou', 1912, 7, 31, 1926, 12, 25 ],
+    "昭和" => [ 'shouwa', 1926, 12, 26, 1989, 1, 7 ],
+    "平成" => [ 'heisei', 1989, 1, 8, 2999, 12, 31 ], # XXX
 );
 
 our %ERA_JA2ASCII = map { $_ => $ERA_TABLE{$_}->[0] } keys %ERA_TABLE;
