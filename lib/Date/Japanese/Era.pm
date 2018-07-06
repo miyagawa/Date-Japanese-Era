@@ -52,14 +52,13 @@ sub _from_ymd {
 	Carp::carp("In $ymd[0] they didn't use gregorious date.");
     }
 
-    require Date::Calc;		# not 'use'
-    *Delta_Days = \&Date::Calc::Delta_Days;
+    require Date::Calc;
 
     # XXX can be more efficient
     for my $era (keys %ERA_TABLE) {
 	my $data = $ERA_TABLE{$era};
-	if (Delta_Days(@{$data}[1..3], @ymd) >= 0 &&
-            Delta_Days(@ymd, @{$data}[4..6]) >= 0) {
+	if (Date::Calc::Delta_Days(@{$data}[1..3], @ymd) >= 0 &&
+            Date::Calc::Delta_Days(@ymd, @{$data}[4..6]) >= 0) {
 	    $self->{name} = $era;
 	    $self->{year} = $ymd[0] - $data->[1] + 1;
 	    $self->{gregorian_year} = $ymd[0];
