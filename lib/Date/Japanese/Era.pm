@@ -16,8 +16,8 @@ sub import {
 	die $@ if $@;
     }
     else {
-	require Date::Japanese::Era::Table;
-	import Date::Japanese::Era::Table;
+        require Date::Japanese::Era::Table;
+        import Date::Japanese::Era::Table;
     }
 }
 
