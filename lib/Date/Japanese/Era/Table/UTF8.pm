@@ -50,7 +50,7 @@ my $newone = '新元号'; # replace it on 2019/04/01
 delete $ERA_TABLE_MORE{$newone};   #### this must to be deleted on 2019/04/01
 
 while( my( $key,  $ref ) = each %ERA_TABLE_MORE ) {
-    $ref->{initial} = uc substr $ref->{'roman'}, 0, 1;
+    $ref->{'initial'} = uc substr $ref->{'roman'}, 0, 1;
     
     $ERA_TABLE{$key} = [
         $ref->{'roman'} || 'heisei',    #### this must to be edited on 2019/04/01
@@ -71,6 +71,21 @@ while( my( $key,  $ref ) = each %ERA_TABLE_MORE ) {
  splice @{$ERA_TABLE{'平成'}}, -3, 3, ( 2999, 12, 31 )
 unless defined $ERA_TABLE_MORE{$newone}{'roman'};
 #### the end of to be deleted
+
+package Date::Japanese::Era;
+
+use strict;
+use utf8;
+
+sub name_initial {
+    my $self = shift;
+    return uc substr $self->_ja2ascii($self->name), 0, 1;
+}
+
+sub name_kana {
+    my $self = shift;
+    return $ERA_TABLE_MORE{$self->name}{'kana'};
+}
 
 1;
 __END__
