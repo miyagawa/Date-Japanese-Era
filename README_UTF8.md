@@ -34,7 +34,9 @@ get the pronounce from name
 
 # AUTHOR
 
-Yuki Yoshida(worthmine) <worthmine@gmail.com>
+Yuki Yoshida <worthmine@cpan.org>
+
+# LISENCE
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
@@ -42,11 +44,3 @@ modify it under the same terms as Perl itself.
 # SEE ALSO
 
 [Date::Japanese::Era](https://metacpan.org/pod/Date::Japanese::Era)
-
-# POD ERRORS
-
-Hey! **The above document had some coding errors, which are explained below:**
-
-- Around line 115:
-
-    Non-ASCII character seen before =encoding in '明治(M)'. Assuming UTF-8

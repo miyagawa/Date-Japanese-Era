@@ -90,6 +90,8 @@ sub name_kana {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Date::Japanese::Era::Table::UTF8 - More detailed Conversion Table for Date::Japanese::Era
@@ -140,8 +142,10 @@ get the pronounce from name
  
 =head1 AUTHOR
 
-Yuki Yoshida(worthmine) E<lt>worthmine@gmail.comE<gt>
+Yuki Yoshida E<lt>worthmine@cpan.orgE<gt>
 
+=head1 LISENCE
+ 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
