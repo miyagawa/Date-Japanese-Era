@@ -67,6 +67,9 @@
       }
    },
    "version" : "0.06",
+   "x_contributors" : [
+      "worthmine <worthmine@cpan.org>"
+   ],
    "x_serialization_backend" : "JSON::PP version 4.00",
    "x_static_install" : 1
 }

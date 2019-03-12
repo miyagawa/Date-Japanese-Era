@@ -3,17 +3,15 @@ package Date::Japanese::Era::Table::UTF8;
 use strict;
 use utf8;
 
-use vars qw($VERSION);
-$VERSION = '0.01';
+our $VERSION = '0.01';
 
-use vars qw(
-    @ISA @EXPORT %ERA_TABLE %ERA_TABLE_MORE %ERA_JA2ASCII %ERA_ASCII2JA
-    %ERA_JA2ROMAN %ERA_ROMAN2JA %ERA_JA2KANA %ERA_KANA2JA
+our (
+    %ERA_TABLE, %ERA_TABLE_MORE, %ERA_JA2ASCII, %ERA_ASCII2JA,
+    %ERA_JA2ROMAN, %ERA_ROMAN2JA, %ERA_JA2KANA, %ERA_KANA2JA
 );
 
-require Exporter;
-@ISA    = qw(Exporter);
-@EXPORT =qw(
+use base 'Exporter';
+our @EXPORT = qw(
     %ERA_TABLE %ERA_TABLE_MORE %ERA_JA2ASCII %ERA_ASCII2JA
     %ERA_JA2ROMAN %ERA_ROMAN2JA %ERA_JA2KANA %ERA_KANA2JA
 );
