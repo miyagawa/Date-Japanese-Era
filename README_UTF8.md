@@ -18,13 +18,19 @@ this module makes a few extra methods for Date::Japanese::Era
 
 get the initial from name\_ascii
 
-
+- 明治(M)
+- 大正(T)
+- 昭和(S)
+- 平成(H)
 
 ## name\_kana
 
 get the pronounce from name
 
-
+- 明治(メイジ)
+- 大正(タイショウ)
+- 昭和(ショウワ)
+- 平成(ヘイセイ)
 
 # AUTHOR
 
@@ -44,33 +50,3 @@ Hey! **The above document had some coding errors, which are explained below:**
 - Around line 115:
 
     Non-ASCII character seen before =encoding in '明治(M)'. Assuming UTF-8
-
-    Unknown directive: =item1
-
-- Around line 117:
-
-    Unknown directive: =item1
-
-- Around line 119:
-
-    Unknown directive: =item1
-
-- Around line 121:
-
-    Unknown directive: =item1
-
-- Around line 131:
-
-    Unknown directive: =item1
-
-- Around line 133:
-
-    Unknown directive: =item1
-
-- Around line 135:
-
-    Unknown directive: =item1
-
-- Around line 137:
-
-    Unknown directive: =item1

@@ -112,13 +112,13 @@ get the initial from name_ascii
 
 =over
  
-=item1 明治(M)
+=item 明治(M)
  
-=item1 大正(T)
+=item 大正(T)
 
-=item1 昭和(S)
+=item 昭和(S)
 
-=item1 平成(H)
+=item 平成(H)
 
 =back
  
@@ -128,13 +128,13 @@ get the pronounce from name
  
 =over
  
-=item1 明治(メイジ)
+=item 明治(メイジ)
 
-=item1 大正(タイショウ)
+=item 大正(タイショウ)
 
-=item1 昭和(ショウワ)
+=item 昭和(ショウワ)
 
-=item1 平成(ヘイセイ)
+=item 平成(ヘイセイ)
 
 =back
  
