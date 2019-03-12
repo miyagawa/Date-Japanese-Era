@@ -42,10 +42,5 @@ for my $test (@tests2) {
     is $e3->name_kana, $kana, "読みは" . $e3->name_kana;
 }
 
-
-
-
-
-
 done_testing;
 

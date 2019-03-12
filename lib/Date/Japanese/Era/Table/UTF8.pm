@@ -92,7 +92,7 @@ __END__
 
 =head1 NAME
 
-Date::Japanese::Era::Table - Conversion Table for Date::Japanese::Era
+Date::Japanese::Era::Table::UTF8 - More detailed Conversion Table for Date::Japanese::Era
 
 =head1 SYNOPSIS
 
@@ -100,11 +100,47 @@ B<DO NOT USE THIS MODULE DIRECTLY>
 
 =head1 DESCRIPTION
 
-This module defines conversion table used by Date::Japanese::Era.
+This module defines conversion table to be used by Date::Japanese::Era.
 
+=head1 METHODS
+
+this module makes a few extra methods for Date::Japanese::Era
+ 
+=head2 name_initial
+ 
+get the initial from name_ascii
+
+=over
+ 
+=item1 明治(M)
+ 
+=item1 大正(T)
+
+=item1 昭和(S)
+
+=item1 平成(H)
+
+=back
+ 
+=head2 name_kana
+
+get the pronounce from name
+ 
+=over
+ 
+=item1 明治(メイジ)
+
+=item1 大正(タイショウ)
+
+=item1 昭和(ショウワ)
+
+=item1 平成(ヘイセイ)
+
+=back
+ 
 =head1 AUTHOR
 
-Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
+Yuki Yoshida(worthmine) E<lt>worthmine@gmail.comE<gt>
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
