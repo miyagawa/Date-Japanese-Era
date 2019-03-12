@@ -174,7 +174,8 @@ sub gregorian_year {
 
 1;
 __END__
-
+=for html <a href="https://travis-ci.org/worthmine/Date-Japanese-Era"><img src="https://travis-ci.org/worthmine/Date-Japanese-Era.svg?branch=master"></a>
+ 
 =encoding utf-8
 
 =head1 NAME

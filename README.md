@@ -1,3 +1,7 @@
+<div>
+    <a href="https://travis-ci.org/worthmine/Date-Japanese-Era"><img src="https://travis-ci.org/worthmine/Date-Japanese-Era.svg?branch=master"></a>
+</div>
+
 # NAME
 
 Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
