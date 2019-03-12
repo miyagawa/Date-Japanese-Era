@@ -6,6 +6,13 @@ our $VERSION = '0.06';
 use Carp;
 use constant END_OF_LUNAR => 1872;
 
+BEGIN {
+    use Time::Piece;
+    my $t = localtime;
+    die "Too old versions You use.\n". __PACKAGE__ . " must be upgraded\n" if $t->strptime( '2019-05-01', '%Y-%m-%d' ) < $t;
+    warn "You have to upgrade " . __PACKAGE__ . " until 2019/04/30\n" if $t->strptime( '2019-04-01', '%Y-%m-%d' ) < $t;
+}
+
 our(%ERA_TABLE, %ERA_JA2ASCII, %ERA_ASCII2JA);
 
 sub import {
