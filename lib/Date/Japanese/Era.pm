@@ -301,7 +301,7 @@ For example, 1912-07-30 is handled as:
 
 =item *
 
-If someday current era (heisei) is changed, Date::Japanese::Era::Table
+If someday current era (reiwa) is changed, Date::Japanese::Era::Table
 should be upgraded.
 
 =back
