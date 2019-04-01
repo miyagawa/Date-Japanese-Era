@@ -1,7 +1,7 @@
 package Date::Japanese::Era;
 
 use strict;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Carp;
 use constant END_OF_LUNAR => 1872;

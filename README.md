@@ -117,7 +117,7 @@ day as newer one, but you can change so that it sticks to JIS table
         default       Taishou 1 07-30
         JIS_X0301     Meiji 45 07-30
 
-- If someday current era (heisei) is changed, Date::Japanese::Era::Table
+- If someday current era (reiwa) is changed, Date::Japanese::Era::Table
 should be upgraded.
 
 # AUTHOR
