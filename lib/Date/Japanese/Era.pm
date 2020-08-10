@@ -8,7 +8,7 @@ our $VERSION = '0.07';
 use Carp qw(carp croak);
 use constant END_OF_LUNAR => 1872;
 
-our ( %ERA_TABLE, %ERA_JA2ASCII, %ERA_ASCII2JA );
+our ( %ERA_TABLE, %ERA_JA2ASCII, %ERA_ASCII2JA, %NEXT, %PREV );
 
 sub import {
     my $self = shift;
@@ -73,7 +73,8 @@ sub _from_ymd {
 sub _from_era {
     my $self = shift;
     my $era  = shift;
-    croak "Invalid number of arguments" unless @_ == 1 or @_ == 3;
+
+    croak "Invalid arguments were set" unless @_ == 1 or @_ == 3;
     my ( $y, $m, $d ) = @_;
 
     if ( $era =~ /^[a-zA-Z]+$/ ) {
@@ -84,7 +85,8 @@ sub _from_era {
         croak "Era needs to be Unicode string";
     }
 
-    my $data = $ERA_TABLE{$era} or croak "Unknown era name: $era";
+    my $data = $ERA_TABLE{$era}
+        or croak "Unknown era name: $era";
 
     my $g_year = $data->[1] + $y - 1;
     if ( @_ == 3 ) {
@@ -95,6 +97,21 @@ sub _from_era {
             and $era ne $self->{'allowExceed'} )
         {
             croak "Invalid combination of era and ymd: $era" . sprintf '%02d-%02d-%02d', @_;
+        } else {
+            $era = $NEXT{$era} if $NEXT{$era};
+            my $begin = $g_year;
+            my $data  = $ERA_TABLE{$era} or croak "Unknown era name: $era";
+            $g_year = $data->[1] + $y - 1;
+            $y -= $g_year - $begin;
+        }
+    } elsif ( $g_year > $data->[4] and $era eq $self->{'allowExceed'} ) {
+        $era = $NEXT{$era} if $NEXT{$era};
+        my $begin = $g_year;
+        my $data  = $ERA_TABLE{$era} or croak "Unknown era name: $era";
+        $g_year = $data->[1] + $y - 1;
+        $y -= $g_year - $begin;
+        if ( $g_year > $data->[4] ) {
+            croak "Invalid combination of era and year: $era-$y";
         }
     } elsif ( $g_year > $data->[4] ) {
         croak "Invalid combination of era and year: $era-$y";
@@ -114,7 +131,9 @@ sub _dwim {
 
     my $gengou_re = join "|", keys %ERA_JA2ASCII;
 
-    $str =~ s/^($gengou_re)// or croak "Can't extract Era from $str";
+    $str =~ s/^($gengou_re)//
+        or croak "Can't extract Era from $str";
+
     my $era = $1;
 
     $str =~ s/\x{5E74}$//;    # nen
@@ -209,6 +228,16 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
   $era = Date::Japanese::Era->new("昭和五十二年");
   $era = Date::Japanese::Era->new("昭和52年");
 
+  # Now you can set more arguments like this:
+  $era = Date::Japanese::Era->new( "平成", 31, 4, 30 ); # 平成
+  $era = Date::Japanese::Era->new( "平成", 31, 5,  1 ); # error because it's a date of '令和'
+  # The errors are controllabile with additional option like that:
+  $era = Date::Japanese::Era->new( "平成", 31, 5,  1, { allowExceed => '平成'} );
+  # Era is '令和' and there is no warnings
+
+  $era = Date::Japanese::Era->new( "平成", 31, 5,  1, { allowExceed => '平成'} );
+  $era = Date::Japanese::Era->new( "平成", 32, { allowExceed => '平成'} );
+
 =head1 DESCRIPTION
 
 Date::Japanese::Era handles conversion between Japanese Era and
@@ -222,6 +251,7 @@ Gregorian calendar.
 
   $era = Date::Japanese::Era->new($year, $month, $day);
   $era = Date::Japanese::Era->new($era_name, $year);
+  $era = Date::Japanese::Era->new($era_name, $year, [ $month, $date, { allowExceed => *gengou } ]);
   $era = Date::Japanese::Era->new($era_year_string);
 
 Constructs new Date::Japanese::Era instance. When constructed from

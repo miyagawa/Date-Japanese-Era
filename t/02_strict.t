@@ -1,5 +1,6 @@
 use strict;
 use Test::More;
+use Test::More::UTF8;
 
 use Date::Japanese::Era;
 
@@ -38,13 +39,20 @@ for my $test (@fails) {
     like $@, qr/^Invalid combination of era and ymd:/, 'to be strictly, it must fail';
 }
 
+note "if allowExceed eq '平成'";
+
 my $pass = pop @fails;
 for my $test (@fails) {
     eval { Date::Japanese::Era->new( @$test, { allowExceed => '平成' } ) };
-    like $@, qr/^Invalid combination of era and ymd:/, 'to be strictly, it must fail';
+    like $@, qr/^Invalid combination of era and ymd:/, 'fail';
 }
 
 my $e = Date::Japanese::Era->new( @$pass, { allowExceed => '平成' } );
-is $e->isa('Date::Japanese::Era'), 1, 'pass';
+is $e->name(), '令和', 'pass';
+is $e->year(), 1,        'pass';
+
+$e = Date::Japanese::Era->new( '平成', 32, { allowExceed => '平成' } );
+is $e->name(), '令和', 'convert to "令和" automatically';
+is $e->year(), 2,        'convert to "令和" automatically';
 
 done_testing;

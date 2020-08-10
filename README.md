@@ -26,6 +26,16 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
     $era = Date::Japanese::Era->new("昭和五十二年");
     $era = Date::Japanese::Era->new("昭和52年");
 
+    # Now you can set more arguments like this:
+    $era = Date::Japanese::Era->new( "平成", 31, 4, 30 ); # 平成
+    $era = Date::Japanese::Era->new( "平成", 31, 5,  1 ); # error because it's a date of '令和'
+    # The errors are controllabile with additional option like that:
+    $era = Date::Japanese::Era->new( "平成", 31, 5,  1, { allowExceed => '平成'} );
+    # Era is '令和' and there is no warnings
+
+    $era = Date::Japanese::Era->new( "平成", 31, 5,  1, { allowExceed => '平成'} );
+    $era = Date::Japanese::Era->new( "平成", 32, { allowExceed => '平成'} );
+
 # DESCRIPTION
 
 Date::Japanese::Era handles conversion between Japanese Era and
@@ -37,6 +47,7 @@ Gregorian calendar.
 
         $era = Date::Japanese::Era->new($year, $month, $day);
         $era = Date::Japanese::Era->new($era_name, $year);
+        $era = Date::Japanese::Era->new($era_name, $year, [ $month, $date, { allowExceed => *gengou } ]);
         $era = Date::Japanese::Era->new($era_year_string);
 
     Constructs new Date::Japanese::Era instance. When constructed from

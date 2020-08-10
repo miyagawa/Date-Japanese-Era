@@ -22,7 +22,8 @@ my %WriteMakefileArgs = (
     "Lingua::JA::Numbers" => "0.04"
   },
   "TEST_REQUIRES" => {
-    "Test::More" => 0
+    "Test::More" => 0,
+    "Test::More::UTF8" => 0
   },
   "VERSION" => "0.07",
   "test" => {
@@ -35,7 +36,8 @@ my %FallbackPrereqs = (
   "Date::Calc" => "4.3",
   "Encode" => "2.1",
   "Lingua::JA::Numbers" => "0.04",
-  "Test::More" => 0
+  "Test::More" => 0,
+  "Test::More::UTF8" => 0
 );
 
 
