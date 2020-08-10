@@ -1,7 +1,6 @@
 use strict;
 use Test::More;
 
-use lib 'lib';
 use Date::Japanese::Era;
 
 use utf8;

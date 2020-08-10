@@ -16,8 +16,7 @@ sub import {
         my $table = shift;
         eval qq{use Date::Japanese::Era::Table::$table};
         die $@ if $@;
-    }
-    else {
+    } else {
         require Date::Japanese::Era::Table;
         import Date::Japanese::Era::Table;
     }
@@ -35,14 +34,11 @@ sub new {
 
     if ( @args == 3 ) {
         $self->_from_ymd(@args);
-    }
-    elsif ( @args == 2 or @args == 4 ) {
+    } elsif ( @args == 2 or @args == 4 ) {
         $self->_from_era(@args);
-    }
-    elsif ( @args == 1 ) {
+    } elsif ( @args == 1 ) {
         $self->_dwim(@args);
-    }
-    else {
+    } else {
         croak "odd number of arguments: ", scalar(@args);
     }
 
@@ -77,8 +73,7 @@ sub _from_ymd {
 sub _from_era {
     my $self = shift;
     my $era  = shift;
-
-    croak "Invalid arguments were set" unless @_ == 1 or @_ == 3;
+    croak "Invalid number of arguments" unless @_ == 1 or @_ == 3;
     my ( $y, $m, $d ) = @_;
 
     if ( $era =~ /^[a-zA-Z]+$/ ) {
@@ -89,22 +84,19 @@ sub _from_era {
         croak "Era needs to be Unicode string";
     }
 
-    my $data = $ERA_TABLE{$era}
-        or croak "Unknown era name: $era";
+    my $data = $ERA_TABLE{$era} or croak "Unknown era name: $era";
 
     my $g_year = $data->[1] + $y - 1;
     if ( @_ == 3 ) {
         require Date::Calc;
         if ( Date::Calc::Delta_Days( @{$data}[ 1 .. 3 ], $g_year, $m, $d ) < 0 ) {
             croak "Invalid combination of era and ymd: $era" . sprintf '%02d-%02d-%02d', @_;
-        }
-        elsif ( Date::Calc::Delta_Days( $g_year, $m, $d, @{$data}[ 4 .. 6 ] ) < 0
+        } elsif ( Date::Calc::Delta_Days( $g_year, $m, $d, @{$data}[ 4 .. 6 ] ) < 0
             and $era ne $self->{'allowExceed'} )
         {
             croak "Invalid combination of era and ymd: $era" . sprintf '%02d-%02d-%02d', @_;
         }
-    }
-    elsif ( $g_year > $data->[4] ) {
+    } elsif ( $g_year > $data->[4] ) {
         croak "Invalid combination of era and year: $era-$y";
     }
 
@@ -122,9 +114,7 @@ sub _dwim {
 
     my $gengou_re = join "|", keys %ERA_JA2ASCII;
 
-    $str =~ s/^($gengou_re)//
-        or croak "Can't extract Era from $str";
-
+    $str =~ s/^($gengou_re)// or croak "Can't extract Era from $str";
     my $era = $1;
 
     $str =~ s/\x{5E74}$//;    # nen
@@ -144,8 +134,7 @@ sub _number {
 
     if ( $str =~ /^\d+$/ ) {
         return $str;
-    }
-    else {
+    } else {
         eval { require Lingua::JA::Numbers };
         if ($@) {
             croak "require Lingua::JA::Numbers to read Japanized numbers";

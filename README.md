@@ -102,7 +102,7 @@ module does not support lunar calendar, but gives warnings in such
 cases ("In %d they didn't use gregorius calendar").
 
     To use calendar ealier than that, see
-    [DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime::Calendar::Japanese::Era), which is based on DateTime
+    [DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime%3A%3ACalendar%3A%3AJapanese%3A%3AEra), which is based on DateTime
     framework and is more comprehensive.
 
 - There should be discussion how we handle the exact day the era has
@@ -135,4 +135,4 @@ modify it under the same terms as Perl itself.
 
 # SEE ALSO
 
-[DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime::Calendar::Japanese::Era), [Date::Calc](https://metacpan.org/pod/Date::Calc), [Encode](https://metacpan.org/pod/Encode)
+[DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime%3A%3ACalendar%3A%3AJapanese%3A%3AEra), [Date::Calc](https://metacpan.org/pod/Date%3A%3ACalc), [Encode](https://metacpan.org/pod/Encode)
