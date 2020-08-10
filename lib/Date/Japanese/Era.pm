@@ -235,7 +235,6 @@ Date::Japanese::Era - Conversion between Japanese Era / Gregorian calendar
   $era = Date::Japanese::Era->new( "平成", 31, 5,  1, { allowExceed => '平成'} );
   # Era is '令和' and there is no warnings
 
-  $era = Date::Japanese::Era->new( "平成", 31, 5,  1, { allowExceed => '平成'} );
   $era = Date::Japanese::Era->new( "平成", 32, { allowExceed => '平成'} );
 
 =head1 DESCRIPTION
