@@ -119,6 +119,7 @@ sub _dwim {
 sub _number {
     my $str = shift;
 
+    $str = "1" if $str eq "\x{5143}"; # gan
     $str =~ s/([\x{FF10}-\x{FF19}])/;ord($1)-0xff10/eg;
 
     if ($str =~ /^\d+$/) {
