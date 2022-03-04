@@ -94,6 +94,49 @@ Gregorian calendar.
     my $era = Date::Japanese::Era->new("平成", 13); # HEISEI 13
     print $era->gregorian_year;   # 2001
 
+## ERA NAME VALIDATION AND CONVERSION
+
+When you construct a new object from Japanese Era and year, this module does not
+handle if the year does not exist for the given era, such as 平成32, since the
+era ended in 31. This might be problematic if you want to allow the year number
+to exceed its end and automatically convert to the correct era i.e. 令和2.
+
+To do this, you can use an offset-based calculation first to get the Gregorian
+year, and then construct a Date::Japanese::Era object from Gregorian year, month
+and day, such as:
+
+    my %offset = (
+        "昭和" => 1925,
+        "平成" => 1988,
+        "令和" => 2018,
+    );
+
+    my $name  = "平成";
+    my $year  = 33;
+    my $month = 4;
+    my $day   = 1;
+
+    my $gregorian_year = $offset{$name} + $year;
+    my $era = Date::Japanese::Era->new( $gregorian_year, $month, $day );
+
+    # $era is now Reiwa 3, since Heisei 33 doesn't exist.
+
+Similarly, to validate if the given Japanese era is valid for the given date,
+you can compare the era after round-tripping with Gregorian year:
+
+    sub is_valid_era {
+        my( $name, $year, $month, $day ) = @_;
+
+        my $ok;
+        eval {
+            my $era1 = Date::Japanese::Era->new($name, $year);
+            my $era2 = Date::Japanese::Era->new($era1->gregorian_year, $month, $day);
+            $ok = $era1->name eq $era2->name;
+        };
+
+        return $ok;
+    }
+
 # CAVEATS
 
 - Currently supported era is up to 'meiji'. And before Meiji 05.12.02,
@@ -102,7 +145,7 @@ module does not support lunar calendar, but gives warnings in such
 cases ("In %d they didn't use gregorius calendar").
 
     To use calendar ealier than that, see
-    [DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime::Calendar::Japanese::Era), which is based on DateTime
+    [DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime%3A%3ACalendar%3A%3AJapanese%3A%3AEra), which is based on DateTime
     framework and is more comprehensive.
 
 - There should be discussion how we handle the exact day the era has
@@ -135,4 +178,4 @@ modify it under the same terms as Perl itself.
 
 # SEE ALSO
 
-[DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime::Calendar::Japanese::Era), [Date::Calc](https://metacpan.org/pod/Date::Calc), [Encode](https://metacpan.org/pod/Encode)
+[DateTime::Calendar::Japanese::Era](https://metacpan.org/pod/DateTime%3A%3ACalendar%3A%3AJapanese%3A%3AEra), [Date::Calc](https://metacpan.org/pod/Date%3A%3ACalc), [Encode](https://metacpan.org/pod/Encode)
